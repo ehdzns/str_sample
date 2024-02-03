@@ -1,4 +1,5 @@
 streamlit
+pygwalker.api.streamlit
 pandas
 altair
 plotly
