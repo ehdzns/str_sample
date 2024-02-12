@@ -134,7 +134,7 @@ with st.container():
     with startdate:    
         date_setting = st.date_input("시작일 - 종료일",list([lidate[0],lidate[-1]]),key=start_d,max_value=(lidate[-1]),min_value=(lidate[0]))
         date_setting_list=date_list(date_setting[0],date_setting[-1],timedelta(days=1))
-        st.write(date_setting_list)
+        
 
         
     # #02. Campaign Information 
