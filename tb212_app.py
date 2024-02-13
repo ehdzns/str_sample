@@ -257,12 +257,13 @@ with st.container():
 
         # 회사 KPI 달성율 그래프 등을 CKPI 컨테이너에 추가
         ###그래프 여기에 추가하세요
-        #수치 리스트   
+        #######수치 리스트   
         vl= list(tbdata.columns)[::-1]
         vl.remove('행 레이블')
         vl.remove('sort')
         vl.remove('media')
         var_list = vl
+        ########
         with media3_container:
             var_name=st.selectbox("상세 지표", var_list)
     with media2:
@@ -295,62 +296,9 @@ with st.container():
                                 fields=['d'], empty=False)
 
         #The basic line
-        line = alt.Chart(source).mark_line(interpolate='basis').encode(
-            x='d',
-            y='v:Q',
-            color='s:N'
-        )
-
-        # Transparent selectors across the chart. This is what tells us
-        # the x-value of the cursor
-        selectors = alt.Chart(source).mark_point().encode(
-            x='d',
-            opacity=alt.value(0),
-        ).add_params(
-            nearest
-        )
-
-        # Draw points on the line, and highlight based on selection
-        points = line.mark_point().encode(
-            opacity=alt.condition(nearest, alt.value(1), alt.value(0))
-        )
-
-        # Draw text labels near the points, and highlight based on selection
-        text = line.mark_text(align='left', dx=5, dy=-5).encode(
-            text=alt.condition(nearest, 'v:Q', alt.value(' '))
-        )
-
-        # Draw a rule at the location of the selection
-        rules = alt.Chart(source).mark_rule(color='gray').encode(
-            x='d',
-        ).transform_filter(
-            nearest
-        )
-
-        # Put the five layers into a chart and bind the data
-        lin_chart=alt.layer(
-            line, selectors, points, rules, text
-        ).properties(
-            width=600, height=300
-        )
-        
-        st.altair_chart(lin_chart, use_container_width=True) 
-        ################ chart 
-
-    #코멘트 컨테이너
-    comment_container = st.container(border=True)
-    with comment_container:
-        st.write('[코멘트]')
-
-    #03. Daily Trend
-    st.markdown('<p class="small-title">3.Daily Trend : </p>', unsafe_allow_html=True)
-
-    #데일리 트렌드 컨테이너
-    DailyTrend_container = st.container(border=True)
-    #여기에 그래프나 데이터를 추가하세요.
-    with DailyTrend_container:
-        st.write('데일리트렌드 데이터')
-        st.write(ccc[ccc['행 레이블'].isin(date_setting_list)])
+        line = alt.Chart(source).mark_line(interpolate='basis').enc임
+        sub_camp_df=tbdata[tbdata['sort']==media_type]
+        st.write(sub_camp_df[sub_camp_df['행 레이블'].isin(date_setting_list)])
     #04.전일비교 Trend
     st.markdown('<p class="small-title">3.전일비교 Trend: </p>', unsafe_allow_html=True)
 
