@@ -519,7 +519,7 @@ with st.container():
                                 fields=['d'], empty=False)
 
         #The basic line
-        line = alt.Chart(source).mark_line(interpolate='basis').encode(
+        line = alt.Chart(source).mark_line(interpolate='linear').encode(
             alt.X('d', title="날짜"),
             alt.Y('v', type='quantitative',title=var_name),
             color='s:N'
