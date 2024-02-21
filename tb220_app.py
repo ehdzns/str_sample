@@ -606,7 +606,7 @@ with st.container():
     
 
     with DayTrend_container:
-        st.write('전일 비교 트렌드 데이터')
+        st.write('전일 비교 트렌드 데이터 : '+str(var_name)+', '+str(date_setting[-1])
     #css
     st.markdown("""
     <style>
