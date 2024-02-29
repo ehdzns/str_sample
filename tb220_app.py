@@ -8,6 +8,9 @@ import altair as alt
 import plotly.express as px
 import pygwalker as pyg
 from datetime import date, datetime, timedelta
+from langchain.chat_models import ChatOpenAI
+import os
+
 
 
 
@@ -166,7 +169,6 @@ def kpi_achiev(tbdata,m,sem,end_date):
 
     tbdf=tbdatadff[tbdatadff['media']==m]
 
-
     start_date = tbdatadff['행 레이블'].unique()[0]  # Replace with your start date
 
     delta = timedelta(days=1)
@@ -252,6 +254,57 @@ def v_change(main_df,day,detail_camp):
     dayrate_df.columns=['index','values']
     
     return(dayrate_df)
+
+
+################## 코멘트 생성 함수, v_change 함수 포함
+
+os.environ['OPENAI_API_KEY'] = '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'
+
+# 객체 생성
+llm = ChatOpenAI(temperature=0,               # 창의성 (0.0 ~ 2.0) 
+                 
+                 model_name='gpt-3.5-turbo',  # 모델명
+                )
+
+def coment_generation(df,date,sort,llm):
+    
+    tp_md=df[df['sort']==sort]
+    cc=tp_md.to_markdown()
+    
+    
+    c_data=v_change(df,date,sort)
+    # 변화율 데이터 추출
+    fee=str(c_data[c_data['index']=='광고비(VAT별도).']['values'].reset_index(drop=True)[0])
+    visitor=str(c_data[c_data['index']=='방문자수.']['values'].reset_index(drop=True)[0])
+    cpa=str(c_data[c_data['index']=='CPA.']['values'].reset_index(drop=True)[0])
+    cpu=str(c_data[c_data['index']=='CPU.']['values'].reset_index(drop=True)[0])
+    cps=str(c_data[c_data['index']=='CPS.']['values'].reset_index(drop=True)[0])
+    cpc=str(c_data[c_data['index']=='CPC.']['values'].reset_index(drop=True)[0])
+    vary=f'주요 지표의  변화율은 다음과 같다. 음수는 감소, 양수는 증가이다. 광고비: {fee}%, 방문자: {visitor}% ,CPC: {cpc}%, CPA: {cpa}%, CPU: {cpu}%, CPS: {cps}%'
+    prompt='''당신은 광고 퍼포먼스 마케터입니다. 광고 캠페인에 대하여 데일리 리포트 코멘트를 작성할 것입니다. 아래의 특징을 가지고 리포트를 작성해주세요.
+
+                증감율 데이터를 포함하여 비용 관련 지표를 중점적으로 살펴봅니다.비용과 관련된 지표는 감소하면 긍정적인 변화입니다.
+
+                # 코멘트 작성 시 꼭 지켜야 할 규칙
+
+                코드블록을 사용하지 않는다.긍정적인 변화에 대해서만 코멘트를 작성한다.증감율에서 3% 이상의 변화가 있는 “모든” 지표에 대해서 분석 결과를 작성한다.변화에 대해서 다른 지표와의 상관관계를 숫자에 근거해 평가한다.
+
+                # 비용 관련 지표
+
+                광고비, 방문자, CPA, CPU, CPS
+
+                # 코멘트 출력문 예시
+
+                [분석 결과]
+
+                CPC는 xx% 감소하여 xx으로 나타났습니다. 이는 긍정적인 변화로 판단됩니다.CPU는 xx% 변화하여 xx로 나타났습니다. 캠페인의 효율이 향상 또는 감소 되었음을 나타냅니다.신규방문CPU는 xx% 변화하여 xx으로 나타났습니다. 이는 어느 정도 감소했지만, 여전히 안정적인 수치입니다.심사CPA는 xx% 감소하여 xx로 나타났습니다. 이는 매우 큰 감소로 효율적인 캠페인 운영을 시사합니다.
+
+                [캠페인에 대한 평가]
+
+                캠페인의 효율이 향상되었음을 확인할 수 있습니다. CPC와 CPU가 감소하면서 더 많은 클릭을 더 적은 비용으로 확보하고 있습니다.특히, CPC의 xx%의 큰 감소는 광고 클릭을 얻는 데 더 효율적으로 예산을 사용하고 있다는 것을 시사합니다.CPU의 감소는 방문자수와 클릭 수의 xx% 감소와 관련이 있을 것으로 판단됩니다. 하지만, 이는 신규방문CPU의 감소로 크게 영향받지 않고 있다는 것을 의미합니다.신규방문CPU와 심사CPA의 감소는 캠페인이 더 효과적으로 신규 방문자를 유입시키고, 심사 단계에서도 더 효율적으로 비용을 소모하고 있다는 것을 나타냅니다.'''
+    question = f'다음 데이터에서 {str(date)} 의 내용을 설명해줘  {cc} {prompt} {vary}'  
+
+    return(llm.predict(question))
 
 ################## 그레프 관련 함수 모음
 #달성률 차트
@@ -564,7 +617,11 @@ with st.container():
     #코멘트 컨테이너
     comment_container = st.container(border=True)
     with comment_container:
-        st.write('[코멘트]')
+        
+        if st.button('코멘트 생성'):
+            st.write(coment_generation(tbdata,date_setting[-1],media_type,llm))
+        else:
+            st.write('no_coment')
 
     #03. Daily Trend
     st.markdown('<p class="small-title">3.Daily Trend : </p>', unsafe_allow_html=True)
@@ -606,7 +663,7 @@ with st.container():
     
 
     with DayTrend_container:
-        st.write('전일 비교 트렌드 데이터 : '+str(var_name)+', '+str(date_setting[-1]))
+        st.write('전일 비교 트렌드 데이터 '+str(var_name)+' '+str(date_setting[-1]))
     #css
     st.markdown("""
     <style>
