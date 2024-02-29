@@ -8,3 +8,4 @@ openpyxl
 datetime
 langchain
 openai
+tabulate
