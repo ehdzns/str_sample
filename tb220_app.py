@@ -9,7 +9,7 @@ import plotly.express as px
 import pygwalker as pyg
 from datetime import date, datetime, timedelta
 from langchain.chat_models import ChatOpenAI
-import os
+
 
 
 
@@ -258,7 +258,6 @@ def v_change(main_df,day,detail_camp):
 
 ################## 코멘트 생성 함수, v_change 함수 포함
 
-os.environ['OPENAI_API_KEY'] = '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'
 
 # 객체 생성
 llm = ChatOpenAI(temperature=0,               # 창의성 (0.0 ~ 2.0) 
