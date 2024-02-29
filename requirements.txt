@@ -6,4 +6,4 @@ plotly
 numpy
 openpyxl
 datetime
-langchain.chat_models
+langchain
