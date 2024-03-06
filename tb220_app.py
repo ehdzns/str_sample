@@ -9,8 +9,7 @@ import plotly.express as px
 import pygwalker as pyg
 from datetime import date, datetime, timedelta
 from langchain.chat_models import ChatOpenAI
-import os
-os.environ['OPENAI_API_KEY'] = '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'
+
 
 #################### functions
 #################### excel file processing
