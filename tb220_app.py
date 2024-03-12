@@ -1,12 +1,12 @@
 #########################
 # Import libraries
 import streamlit as st
-from pygwalker.api.streamlit import StreamlitRenderer, init_streamlit_comm
+
 import pandas as pd
 import numpy as np
 import altair as alt
 import plotly.express as px
-import pygwalker as pyg
+
 from datetime import date, datetime, timedelta
 from langchain.chat_models import ChatOpenAI
 
@@ -623,6 +623,10 @@ with st.container():
     comment_container = st.container(border=True)
     with comment_container:
         comment_date=st.selectbox('코멘트 일자', comment_date_list)
+<<<<<<< HEAD
+        
+=======
+>>>>>>> 5421985dc407237623f3ffbd643efdd81e1adc5d
         if st.button('코멘트 생성'):
             st.write(coment_generation(tbdata,comment_date,media_type,llm))
         else:
@@ -638,7 +642,10 @@ with st.container():
         st.write('데일리트렌드 데이터')
 
         ############ 세부 종목 df
+<<<<<<< HEAD
+=======
         
+>>>>>>> 5421985dc407237623f3ffbd643efdd81e1adc5d
         st.write(specific_df)
         ############
 
