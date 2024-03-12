@@ -612,13 +612,19 @@ with st.container():
         
         st.altair_chart(lin_chart, use_container_width=True) 
         ################ chart 
-
+    
     #코멘트 컨테이너
+    ###################세부종목 데이터프레임 생성(코멘트 및 데일리 트렌드 데이터에 사용)
+    sub_camp_df=tbdata[tbdata['sort']==media_type]
+    specific_df=sub_camp_df[sub_camp_df['행 레이블'].isin(date_setting_list)].reset_index(drop=True)
+    #세부종목 데이터프레임의 날짜 리스트 추출
+    comment_date_list=list(specific_df['행 레이블'].unique())
+    ####################
     comment_container = st.container(border=True)
     with comment_container:
-        
+        comment_date=st.selectbox('코멘트 일자', comment_date_list)
         if st.button('코멘트 생성'):
-            st.write(coment_generation(tbdata,date_setting[-1],media_type,llm))
+            st.write(coment_generation(tbdata,comment_date,media_type,llm))
         else:
             st.write('no_coment')
 
@@ -632,8 +638,8 @@ with st.container():
         st.write('데일리트렌드 데이터')
 
         ############ 세부 종목 df
-        sub_camp_df=tbdata[tbdata['sort']==media_type]
-        st.write(sub_camp_df[sub_camp_df['행 레이블'].isin(date_setting_list)].reset_index(drop=True))
+        
+        st.write(specific_df)
         ############
 
     #04.전일비교 Trend
