@@ -632,6 +632,7 @@ with st.container():
         comment_date=st.selectbox('코멘트 일자', comment_date_list)
         
         if st.button('코멘트 생성'):
+            st.spinner(text="In progress...")
             st.write(coment_generation(tbdata,comment_date,media_type,llm))
         else:
             st.write('no_coment')
