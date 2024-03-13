@@ -10,7 +10,8 @@ import plotly.express as px
 from datetime import date, datetime, timedelta
 from langchain.chat_models import ChatOpenAI
 
-
+# import os
+# os.environ['OPENAI_API_KEY'] = "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"
 #################### functions
 #################### excel file processing
 def date_data(xlsxfile,sheet_no):
@@ -208,8 +209,14 @@ def kpi_achiev(tbdata,m,sem,end_date):
 
         budget_sum=tbdf['광고비(VAT별도).'].sum()
         visitors_sum=tbdf['방문자수.'].sum()
-        CPU_sum=budget_sum/visitors_sum
-        CPA=budget_sum/sum(tbdf['심사수.'])
+        if visitors_sum==0:
+            CPU_sum=0
+        else:
+            CPU_sum=budget_sum/visitors_sum
+        if sum(tbdf['심사수.'])==0:
+            CPA=0
+        else:
+            CPA=budget_sum/sum(tbdf['심사수.'])
         kpi_period=pd.DataFrame({'광고비(VAT별도).':[budget_sum],'방문자수.':[visitors_sum],'CPU.':[CPU_sum],'심사CPA.':[CPA]})
 
         
@@ -623,10 +630,7 @@ with st.container():
     comment_container = st.container(border=True)
     with comment_container:
         comment_date=st.selectbox('코멘트 일자', comment_date_list)
-<<<<<<< HEAD
         
-=======
->>>>>>> 5421985dc407237623f3ffbd643efdd81e1adc5d
         if st.button('코멘트 생성'):
             st.write(coment_generation(tbdata,comment_date,media_type,llm))
         else:
@@ -642,10 +646,6 @@ with st.container():
         st.write('데일리트렌드 데이터')
 
         ############ 세부 종목 df
-<<<<<<< HEAD
-=======
-        
->>>>>>> 5421985dc407237623f3ffbd643efdd81e1adc5d
         st.write(specific_df)
         ############
 
@@ -656,7 +656,7 @@ with st.container():
     DayTrend_container = st.container(border=True)
     #여기에 그래프나 데이터를 추가하세요.
 
-    c_data=v_change(tbdata,date_setting[-1],media_type)
+    c_data=v_change(tbdata,comment_date,media_type)
 
     c_chart_b=alt.Chart(c_data).mark_bar().encode(
     x="index",
@@ -675,7 +675,7 @@ with st.container():
     
 
     with DayTrend_container:
-        st.write('전일 비교 트렌드 데이터 '+str(var_name)+' '+str(date_setting[-1]))
+        st.write('전일 비교 트렌드 데이터 '+str(var_name)+' '+str(comment_date))
     #css
     st.markdown("""
     <style>
