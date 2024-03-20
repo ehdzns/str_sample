@@ -9,3 +9,4 @@ datetime
 langchain
 openai
 tabulate
+os
