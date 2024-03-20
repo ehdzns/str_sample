@@ -21,3 +21,4 @@ if api:
     st.write(llm.predict(question))
 else:
     st.write('type api')
+st.selectbox('select',[1,2,3,4,5])
