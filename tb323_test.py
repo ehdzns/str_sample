@@ -395,7 +395,7 @@ if uploaded_file is not None:
     date_list = get_date_list_from_dataframe(main_data)
     
 else:
-    preprocessed_data = load_data('../data/sample_4월_데일리 리포트_fin.xlsx')
+    preprocessed_data = load_data('/data/sample_4월_데일리 리포트_fin.xlsx')
     main_data_LOAD = preprocessed_data
     main_data=main_data_LOAD[DATA_COLIMNS]
     date_list = get_date_list_from_dataframe(main_data)
