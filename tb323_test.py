@@ -407,7 +407,7 @@ with st.container():
     start_d='start_date'
     end_d='end_date'
     with logo:
-        st.image('../data/image1.jpeg')
+        st.image('/data/image1.jpeg')
     with startdate:    
         date_setting = st.date_input("시작일 - 종료일",list([date_list[0],date_list[-1]]),key=start_d,max_value=(date_list[-1]),min_value=(date_list[0]))
         date_setting_list=generate_date_list(date_setting[0],date_setting[-1],timedelta(days=1))
