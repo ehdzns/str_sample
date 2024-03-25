@@ -433,7 +433,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # 사이드바
-st.sidebar.image("../data/logo.png", use_column_width=True)
+st.sidebar.image("data/logo.png", use_column_width=True)
 st.sidebar.divider()
 st.sidebar.markdown('<a href="#00" style="color: #FB5B5B; text-decoration: none; font-weight: bold; font-size: 18px;">❑ Data Load</a>', unsafe_allow_html=True)
 st.sidebar.markdown('<a href="#03" style="color: #FB5B5B; text-decoration: none; font-weight: bold; font-size: 18px;">❑ Daily Trend Data</a>', unsafe_allow_html=True)
