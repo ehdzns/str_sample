@@ -129,7 +129,7 @@ def ORGANIZE_RAW_DATA(PROCESSED_DF):
                     FIN_DF_MERGE=pd.merge(FIN_DF.reset_index(), FIN_DF_INDICATOR, how='inner')
                     FIN_DF_MERGE[['CPC','CPS','CPU','CPA','접수CPA','심사CPA','승인CPA','예금CPA','대출CPA']].astype(int)
                     FIN_DF_MERGE['media']=i+"_"+j
-                    FIN_DF_MERGE['sort']=z+"_"+a
+                    FIN_DF_MERGE['sort']=i+"_"+j+'_'+z+"_"+a
                     ALL_DF_LI.append(FIN_DF_MERGE)
     #데이터 통합                
     ARRANGED_DF=pd.concat(ALL_DF_LI)
@@ -163,7 +163,7 @@ def get_date_list_from_dataframe(dataframe):
     Returns:
         list: 데이터프레임의 전체 날짜 목록.
     """
-    return list(dataframe['일'].unique())
+    return list(dataframe['일'].astype('date32[pyarrow]').unique())
 
 def generate_datetime_range(start, end, delta):
     """
@@ -253,8 +253,10 @@ def KPI_ACHIVE_CAL(DATA_DF,GOAL_DF):
     RATE_COL=[float(SUM_AR['광고비(VAT별도)']/GOAL_DF['매체비'])*100,float(CPU/GOAL_DF['CPU'])*100,float(CPC/GOAL_DF['CPC'])*100,float(SUM_AR['방문자수']/GOAL_DF['방문자수'])*100]
     
     VAR_COL=list(GOAL_DF.columns)
-
-    return pd.DataFrame({'variable':VAR_COL,'value':RATE_COL})
+    
+    RES_DF=pd.DataFrame({'variable':VAR_COL,'value':np.round(RATE_COL,2)})
+    
+    return RES_DF
 
 def generate_comment(dataframe, date, campaign_name, llm_model):
     """
@@ -371,19 +373,19 @@ DATA_COLIMNS=['일','광고비(콘솔)','광고비(VAT별도)','CPC','CPS','CPU'
 #######################
 # Page Configuration
 st.set_page_config(
-    page_title="퍼포먼스 바이 TBWA",
+    page_title="리포트 생성 대시보드",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 alt.themes.enable('dark')
 
 # 01 상단바 
-st.title('퍼포먼스 바이 TBWA')
+st.title('리포트 생성 대시보드')
 
 #######################
 # Load Data
 # 엑셀 파일 업로드 가능 기능, 업로드가 없는 경우 GitHub의 더미 데이터로 대시보드를 구성합니다.
-uploaded_file = st.file_uploader("업로드할 파일 선택")
+uploaded_file = st.file_uploader("업로드 할 파일 선택")
 
 
 if uploaded_file is not None:
@@ -393,7 +395,7 @@ if uploaded_file is not None:
     date_list = get_date_list_from_dataframe(main_data)
     
 else:
-    preprocessed_data = load_data('data/sample_4월_데일리 리포트_fin.xlsx')
+    preprocessed_data = load_data('../data/sample_4월_데일리 리포트_fin.xlsx')
     main_data_LOAD = preprocessed_data
     main_data=main_data_LOAD[DATA_COLIMNS]
     date_list = get_date_list_from_dataframe(main_data)
@@ -405,7 +407,7 @@ with st.container():
     start_d='start_date'
     end_d='end_date'
     with logo:
-        st.image('data/image1.jpeg')
+        st.image('../data/image1.jpeg')
     with startdate:    
         date_setting = st.date_input("시작일 - 종료일",list([date_list[0],date_list[-1]]),key=start_d,max_value=(date_list[-1]),min_value=(date_list[0]))
         date_setting_list=generate_date_list(date_setting[0],date_setting[-1],timedelta(days=1))
@@ -450,8 +452,7 @@ with st.container():
     
    
     # KPI 컨테이너 생성
-    KPI, CKPI = st.columns([1,1]) 
-    
+    KPI=st.container(border=True)
     with KPI:
         st.write('달성 기준 작성')
         AD_FEE_AC,AD_CPU_AC,AD_CPC_AC,AD_VISITOR_AC=st.columns([100,100,100,100])
@@ -497,25 +498,6 @@ with st.container():
         ####그래프 여기에 추가하세요
         KPI_container.markdown("[KPI 달성율]")
 
-    with CKPI:
-        # CKPI 컨테이너의 스타일을 CSS로 지정하여 높이와 색상 조정
-        st.markdown(
-            """
-            <style>
-            .ckpi-container {
-                height: 200px; /* 원하는 높이 값(px)으로 수정 */
-                border: 20px #FB5B5B; /* 테두리 스타일 지정 */
-                padding: 10px; /* 안쪽 여백 설정 */
-            }
-            </style>
-            """, unsafe_allow_html=True
-        )
-        # CKPI 컨테이너 생성
-        CKPI_container = st.container(border=True)
-
-        # 회사 KPI 달성율 그래프 등을 CKPI 컨테이너에 추가
-        ###그래프 여기에 추가하세요
-        CKPI_container.write("[회사명 KPI 달성율]")
 
     # 03 Media Trend
 
@@ -665,9 +647,9 @@ with st.container():
                 st.spinner(text='in progress')
                 st.write(generate_comment(main_data, comment_date, media_type, llm))
             else:
-                st.write('no_coment')
+                st.write('no_comment')
         else:
-            st.write('type api')
+            st.write('Type Your API Key to get the report.')
 
     # 04 Daily Trend
     st.markdown('<p class="small-title">3.Daily Trend : </p>', unsafe_allow_html=True)
@@ -676,7 +658,7 @@ with st.container():
     DailyTrend_container = st.container(border=True)
     
     with DailyTrend_container:
-        st.write('데일리트렌드 데이터')
+        st.write('데일리 트렌드 데이터')
 
         ############ 세부 종목 df
         st.write(specific_df)
@@ -708,7 +690,7 @@ with st.container():
     
 
     with DayTrend_container:
-        st.write('전일 비교 트렌드 데이터 '+str(var_name)+' '+str(comment_date))
+        st.write('전일 비교 트렌드 데이터 ['+str(var_name)+'] '+str(comment_date))
         
     # css
     st.markdown("""
