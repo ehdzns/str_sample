@@ -119,7 +119,7 @@ def ORGANIZE_RAW_DATA(PROCESSED_DF):
                 SORT_CAT_A=SORTED_CAMP['광고유형'].unique()
                 for a in SORT_CAT_A:
                     SORTED_CAT= SORTED_CAMP[SORTED_CAMP['광고유형']==a]
-                    FIN_DF=SORTED_CAMP.groupby('일').sum()
+                    FIN_DF=SORTED_CAT.groupby('일').sum()
                     FIN_DF['광고유형']=a
                     FIN_DF['Campaign']=z
                     FIN_DF['매체']=j
