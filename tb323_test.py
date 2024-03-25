@@ -16,7 +16,7 @@ def READ_COMPANY(excel_location):
     SUMMARY_TOTAL_SHEET=pd.read_excel(excel_location, sheet_name='Summary_Total')
     SUMMARY_TOTAL_SHEET.dropna(axis=0,how='all',inplace=True)
     SUMMARY_TOTAL_SHEET.dropna(axis=1,how='all',inplace=True)
-    COMPANY_NAME=SUMMARY_TOTAL_SHEET[SUMMARY_TOTAL_SHEET[SUMMARY_TOTAL_SHEET.columns[0]]=='캠페인명'].iloc[1]
+    COMPANY_NAME=SUMMARY_TOTAL_SHEET[SUMMARY_TOTAL_SHEET[SUMMARY_TOTAL_SHEET.columns[0]]=='캠페인명'].iloc[:,1]
 
     return COMPANY_NAME
 def READ_EXCEL(excel_location):
