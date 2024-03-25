@@ -12,7 +12,13 @@ import os
 
 #########################
 # Functions
+def READ_COMPANY(excel_location):
+    SUMMARY_TOTAL_SHEET=pd.read_excel(excel_location, sheet_name='Summary_Total')
+    SUMMARY_TOTAL_SHEET.dropna(axis=0,how='all',inplace=True)
+    SUMMARY_TOTAL_SHEET.dropna(axis=1,how='all',inplace=True)
+    COMPANY_NAME=SUMMARY_TOTAL_SHEET[SUMMARY_TOTAL_SHEET[SUMMARY_TOTAL_SHEET.columns[0]=='캠페인명']].iloc[1]
 
+    return COMPANY_NAME
 def READ_EXCEL(excel_location):
 
     """
@@ -440,7 +446,7 @@ with st.container():
     # Campaign 정보 입력 
     # Markdown과 st.write()를 함께 사용하여 한 줄에 여러 내용을 표시
         
-    Company = 'A' # 회사 설정 필요 
+    Company = READ_COMPANY('data/sample_4월_데일리 리포트_fin.xlsx') # 회사 설정 필요 
     st.markdown('<p class="small-title">1. Campaign Information : {} - {}</p>'.format(date_setting[0].year, date_setting[0].month), unsafe_allow_html=True)
     st.markdown('<p class="general-text" style="margin-bottom: 3px;">캠페인명: {}사 {}월 캠페인</p>'.format(Company, date_setting[0].month), unsafe_allow_html=True)
     st.markdown('<p class="general-text" style="margin-bottom: 3px;">운영일자: {}-{}-{}</p>'.format(date_setting[0].year, date_setting[0].month, date_setting[0].day), unsafe_allow_html=True) ##날짜 변경 필요
