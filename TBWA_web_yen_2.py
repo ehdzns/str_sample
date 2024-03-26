@@ -456,7 +456,6 @@ with st.container():
     uploaded_file = st.file_uploader("‣ 파일 업로드")
 
     if uploaded_file is not None:
-        st.cache_data.clear()
         date_list=[]  
         preprocessed_data_input = load_data(uploaded_file)
         main_data_input=preprocessed_data_input[DATA_COLIMNS]
@@ -466,10 +465,10 @@ with st.container():
         
     else:
         date_list=[]  
-        preprocessed_data = load_data('data/sample_4월_데일리 리포트_fin.xlsx')
+        preprocessed_data = load_data('data/sample_6월_데일리 리포트_fin.xlsx')
         main_data=preprocessed_data[DATA_COLIMNS]
         date_list = get_date_list_from_dataframe(main_data)
-        Company = READ_COMPANY('data/sample_4월_데일리 리포트_fin.xlsx')
+        Company = READ_COMPANY('data/sample_6월_데일리 리포트_fin.xlsx')
     
     date_selection,media_goods,media_types=st.columns(3)
     
