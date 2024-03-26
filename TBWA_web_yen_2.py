@@ -508,7 +508,7 @@ DailyTrend_container = st.container(border=True)
 DailyTrend_container.write(specific_df)
 
 # [Campaign Information]
- 
+st.write(date_list) 
 st.markdown('<p class="small-title" id="01" style="color: #FFFFFF;">l', unsafe_allow_html=True)
 st.markdown('<p class="small-title">❑ Campaign Information : {}년 {}월 </p>'.format(date_setting[0].year, date_setting[0].month), unsafe_allow_html=True)
 st.markdown('<p class="general-text" style="margin-bottom: 3px;"><strong>‣ 캠페인명:</strong> {}</p>'.format(Company), unsafe_allow_html=True)
