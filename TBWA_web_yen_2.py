@@ -456,6 +456,7 @@ with st.container():
     uploaded_file = st.file_uploader("‣ 파일 업로드")
 
     if uploaded_file is not None:
+        st.cache_data.clear()
         date_list=[]  
         preprocessed_data_input = load_data(uploaded_file)
         main_data_input=preprocessed_data_input[DATA_COLIMNS]
