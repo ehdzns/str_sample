@@ -460,8 +460,7 @@ with st.container():
         date_list=[]  
         preprocessed_data_input = load_data(uploaded_file)
         main_data_input=preprocessed_data_input[DATA_COLIMNS]
-        date_list1 = get_date_list_from_dataframe(main_data_input)
-        date_list=date_list1
+        date_list = get_date_list_from_dataframe(main_data_input)
         main_data= main_data_input
         Company = READ_COMPANY(uploaded_file)
         
@@ -510,7 +509,7 @@ DailyTrend_container = st.container(border=True)
 DailyTrend_container.write(specific_df)
 
 # [Campaign Information]
-st.write(date_list1) 
+st.write(date_list) 
 st.markdown('<p class="small-title" id="01" style="color: #FFFFFF;">l', unsafe_allow_html=True)
 st.markdown('<p class="small-title">❑ Campaign Information : {}년 {}월 </p>'.format(date_setting[0].year, date_setting[0].month), unsafe_allow_html=True)
 st.markdown('<p class="general-text" style="margin-bottom: 3px;"><strong>‣ 캠페인명:</strong> {}</p>'.format(Company), unsafe_allow_html=True)
