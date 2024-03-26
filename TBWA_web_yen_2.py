@@ -509,14 +509,14 @@ DailyTrend_container = st.container(border=True)
 DailyTrend_container.write(specific_df)
 
 # [Campaign Information]
-st.write(date_list) 
+
 st.markdown('<p class="small-title" id="01" style="color: #FFFFFF;">l', unsafe_allow_html=True)
 st.markdown('<p class="small-title">❑ Campaign Information : {}년 {}월 </p>'.format(date_setting[0].year, date_setting[0].month), unsafe_allow_html=True)
 st.markdown('<p class="general-text" style="margin-bottom: 3px;"><strong>‣ 캠페인명:</strong> {}</p>'.format(Company), unsafe_allow_html=True)
 st.markdown('<p class="general-text" style="margin-bottom: 3px;"><strong>‣ 캠페인 시작일:</strong>  {}/{}/{}</p>'.format(date_setting[0].year, date_setting[0].month, date_setting[0].day), unsafe_allow_html=True)
 st.markdown('<p class="general-text" style="margin-bottom: 3px;"><strong>‣ 캠페인 종료일:</strong>  {}/{}/{}</p>'.format(date_setting[-1].year, date_setting[-1].month, date_setting[-1].day), unsafe_allow_html=True)
 st.write(" ")
-
+st.write(date_list) 
 # KPI 달성 데이터 생성
 KPI = st.container(border=True)
 with KPI:
