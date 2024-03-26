@@ -458,7 +458,7 @@ with st.container():
     if uploaded_file is not None:
         date_list=[]  
         preprocessed_data_input = load_data(uploaded_file)
-        main_data_input=preprocessed_data[DATA_COLIMNS]
+        main_data_input=preprocessed_data_input[DATA_COLIMNS]
         date_list = get_date_list_from_dataframe(main_data_input)
         main_data= main_data_input
         Company = READ_COMPANY(uploaded_file)
