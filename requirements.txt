@@ -6,5 +6,6 @@ numpy
 openpyxl
 datetime
 langchain
+langchain-community
 openai
 tabulate
