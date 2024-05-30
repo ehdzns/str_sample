@@ -750,7 +750,7 @@ with comment_container:
     if api_input:  # API 키 입력 시
         os.environ['OPENAI_API_KEY'] = api_input
         try:
-            llm = ChatOpenAI(temperature=0.5, model_name='gpt-4o')
+            llm = ChatOpenAI(temperature=0.8, model_name='gpt-4o')
             api_valid = True
         except Exception as e:  # API 키 유효하지 않을 때
             st.error("API 키가 올바르지 않습니다. 다시 확인해주세요.")
@@ -762,7 +762,7 @@ with comment_container:
         if api_valid:  # API 키가 유효할 때만 코멘트 생성 시도
             try:
                 with st.spinner(text='코멘트를 생성 중입니다...'):
-                    generated_comment = generate_comment(main_data, comment_date2, media_type, llm,SPECIFIC_CONTENT)
+                    generated_comment = generate_comment(specific_df, comment_date2, media_type, llm,SPECIFIC_CONTENT)
                 st.write(generated_comment)
             except Exception as e:  # 코멘트 생성 중 에러 발생 시
                 st.error("코멘트 생성 중 오류가 발생했습니다. API 키와 입력 데이터를 확인해주세요.")
