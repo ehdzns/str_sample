@@ -750,7 +750,7 @@ with comment_container:
     if api_input:  # API 키 입력 시
         os.environ['OPENAI_API_KEY'] = api_input
         try:
-            llm = ChatOpenAI(temperature=1.1, model_name='gpt-4o')
+            llm = ChatOpenAI(temperature=0.7, model_name='gpt-4o')
             api_valid = True
         except Exception as e:  # API 키 유효하지 않을 때
             st.error("API 키가 올바르지 않습니다. 다시 확인해주세요.")
