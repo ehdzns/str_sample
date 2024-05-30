@@ -335,8 +335,8 @@ def generate_comment(dataframe, date, campaign_name, llm_model,SPECIFIC_CONTENT)
 
         '''
     
-    question = f'''다음 데이터에서 {date} 의 내용을 설명해주세요. #{variation_comment}
-    {campaign_description} #다음 내용을 포함하시오 {SPECIFIC_CONTENT}, {prompt}  '''
+    question = f'''다음 데이터에서 {date} 의 내용을 설명해주세요.
+    {campaign_description} #다음 내용을 포함하시오 {SPECIFIC_CONTENT}, {prompt}, #{variation_comment}  '''
 
     return llm_model.predict(question)
 
