@@ -335,8 +335,8 @@ def generate_comment(dataframe, date, campaign_name, llm_model,SPECIFIC_CONTENT)
 
         '''
     
-    question = f'''다음 데이터에서 {date} 의 내용을 설명해주세요. 
-    {campaign_description} #다음 내용을 포함하시오 {SPECIFIC_CONTENT}, {prompt} '''
+    question = f'''다음 데이터에서 {date} 의 내용을 설명해주세요. #{variation_comment}
+    {campaign_description} #다음 내용을 포함하시오 {SPECIFIC_CONTENT}, {prompt}  '''
 
     return llm_model.predict(question)
 
@@ -750,7 +750,7 @@ with comment_container:
     if api_input:  # API 키 입력 시
         os.environ['OPENAI_API_KEY'] = api_input
         try:
-            llm = ChatOpenAI(temperature=0.1, model_name='gpt-4o')
+            llm = ChatOpenAI(temperature=0.5, model_name='gpt-4o')
             api_valid = True
         except Exception as e:  # API 키 유효하지 않을 때
             st.error("API 키가 올바르지 않습니다. 다시 확인해주세요.")
